@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.rental',
     'rest_framework',
+    'django_seed'
 ]
 
 MIDDLEWARE = [
