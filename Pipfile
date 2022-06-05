@@ -8,6 +8,10 @@ django = "*"
 django-filter = "*"
 django-seed = "*"
 djangorestframework = "*"
+gunicorn = "*"
+whitenoise = "*"
+dj-database-url = "*"
+psycopg2 = "*"
 
 [dev-packages]
 autopep8 = "*"
