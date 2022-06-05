@@ -1,13 +1,13 @@
 [[source]]
+name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
-name = "pypi"
 
 [packages]
 django = "*"
-djangorestframework = "*"
 django-filter = "*"
 django-seed = "*"
+djangorestframework = "*"
 
 [dev-packages]
 autopep8 = "*"
@@ -16,10 +16,11 @@ autopep8 = "*"
 python_version = "3.9"
 
 [scripts]
-server = "python manage.py runserver"
-migrate = "python manage.py migrate"
-makemigrations = "python manage.py makemigrations"
-superuser = "python manage.py createsuperuser"
 flush = "python manage.py flush"
+makemigrations = "python manage.py makemigrations"
+migrate = "python manage.py migrate"
+seed = "python manage.py seed --mode=refresh"
+server = "python manage.py runserver"
 shell = "python manage.py shell"
 static = "python manage.py collectstatic"
+superuser = "python manage.py createsuperuser"

@@ -1,3 +1,4 @@
+import json
 import logging
 
 from apps.rental.models import Product
@@ -5,7 +6,7 @@ from django.core.management.base import BaseCommand
 
 # python manage.py seed --mode=refresh
 
-""" Clear all data and creates addresses """
+""" Clear all data and creates products """
 MODE_REFRESH = 'refresh'
 
 """ Clear all data and do not create any object """
@@ -20,32 +21,36 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write('seeding data...')
-        self.run_seed(self, options['mode'])
+        self.run_seed(options['mode'])
         self.stdout.write('done.')
 
     def run_seed(self, mode):
         clear_data()
         if mode == MODE_CLEAR:
             return
-        for i in range(15):
-            create_product()
+        create_products()
 
 
 def clear_data():
     """
         Deletes all the table data
     """
-    logging.info("Delete Address instances")
+    logging.info("Delete Product instances")
     Product.objects.all().delete()
 
 
-def create_product(code, name, type, availability, needing_repair, durability, max_durability, price, minimum_rent_period):
+def create_products():
     """
         Creates a Product object
     """
     logging.info("Creating product")
-    product = Product()
-    product.save()
-    logging.info("{} address created.".format(product))
-    return product
-# [{"_id":1,"code":"p1","name":"Air Compressor 12 GAS","type":"plain","availability":true,"needing_repair":false,"durability":3000,"max_durability":3000,"price":"4500.0","minimum_rent_period":1}]
+    with open('seed.json', 'r') as f:
+        data = json.load(f)
+    for d in data:
+        product = Product(code=d['code'], name=d['name'],
+                          type=d['type'], availability=d['availability'], needing_repair=d['needing_repair'],
+                          durability=d['durability'], max_durability=d['max_durability'], mileage=d['mileage'],
+                          price=d['price'], minimum_rent_period=d['minimum_rent_period']
+                          )
+        product.save()
+        logging.info("{} address created.".format(product))
