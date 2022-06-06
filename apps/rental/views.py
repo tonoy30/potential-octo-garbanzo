@@ -5,7 +5,7 @@ from .serializers import ProductSerializer
 
 
 class ProductList(generics.ListCreateAPIView):
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by('_id')
     serializer_class = ProductSerializer
 
 
