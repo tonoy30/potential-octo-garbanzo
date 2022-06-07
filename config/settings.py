@@ -145,7 +145,12 @@ REST_FRAMEWORK = {
 }
 # CORS
 CORS_ALLOWED_ORIGINS = [
+    "https://cuddly-pancake-1.herokuapp.com",
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://cuddly-pancake-1.herokuapp.com"
+    "http://127.0.0.1:3000"
 ]
+CORS_ORIGIN_WHITELIST = (
+    "https://cuddly-pancake-1.herokuapp.com",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+)
