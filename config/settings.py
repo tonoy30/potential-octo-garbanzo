@@ -144,4 +144,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'apps.rental.core.pagination.CountsPagination'
 }
 # CORS
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    "https://cuddly-pancake-1.herokuapp.com",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
