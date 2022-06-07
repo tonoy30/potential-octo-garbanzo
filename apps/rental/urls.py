@@ -12,5 +12,7 @@ urlpatterns = [
          name='products-rent-confirmed'),
     path('products/return', ProductRental.as_view({'post': 'return_product'}),
          name='products-rent-return'),
+    path('products/return/confirmed', ProductRental.as_view({'post': 'confirmed_product_return'}),
+         name='products-return-confirmed'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -25,6 +25,13 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProductRental(ViewSet):
+    def calculate_total_rent(self, product, total_rental_period_days):
+        total_rent = float(product.price) * total_rental_period_days
+        if (total_rental_period_days > product.minimum_rent_period and product.discount > 0):
+            discount = (total_rent * product.discount) / 100
+            total_rent = total_rent - discount
+        return total_rent
+
     def calculate_product_rent(self, request):
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
@@ -44,10 +51,8 @@ class ProductRental(ViewSet):
                 return Response({'error': 'Minimum rent period is not satisfied'},
                                 status=status.HTTP_400_BAD_REQUEST)
 
-            total_rent = float(product.price) * total_rental_period_days
-            if (total_rental_period_days > minimum_rental_period and product.discount > 0):
-                discount = (total_rent * product.discount) / 100
-                total_rent = total_rent - discount
+            total_rent = self.calculate_total_rent(
+                product, total_rental_period_days)
 
             product.rented_at = rented_at
             product.returned_at = returned_at
@@ -69,6 +74,22 @@ class ProductRental(ViewSet):
 
     # NOTE: For simplicity I can assume all user will return the rented product on time
     def return_product(self, request):
+        product = Product.objects.get(_id=request.data.get('id'))
+        if product is not None:
+            rented_at = product.rented_at
+            returned_at = product.returned_at
+            total_rental_period_days = (returned_at - rented_at).days
+            total_rent = self.calculate_total_rent(
+                product, total_rental_period_days)
+
+            return Response({'id': product._id, 'discount': product.discount, 'total_rent': total_rent,
+                            'rented_at': product.rented_at, 'returned_at': product.returned_at},
+                            status=status.HTTP_201_CREATED)
+        return Response({'error': 'product not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # NOTE: For simplicity I can assume all user will return the rented product on time
+
+    def confirmed_product_return(self, request):
         product = Product.objects.get(_id=request.data.get('id'))
         if product is not None:
             product.availability = True
