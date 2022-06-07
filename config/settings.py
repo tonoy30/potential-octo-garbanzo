@@ -141,7 +141,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # DRF
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'apps.rental.core.pagination.CountsPagination'
+    'DEFAULT_PAGINATION_CLASS': 'apps.rental.core.pagination.CountsPagination',
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning'
 }
 # CORS
 CORS_ALLOWED_ORIGINS = [
