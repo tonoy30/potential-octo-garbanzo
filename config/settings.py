@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 
 import dj_database_url
+import environ
+
+env = environ.Env()
+root_path = environ.Path(__file__) - 2
+
+ENV = env('ENV', default='prod')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +28,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--v5q)u@q%=%roqkghn)wsug9q#f@m5rgx2nfc2%mwii4!8!#+='
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -39,14 +45,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.rental',
+    'corsheaders',
     'rest_framework',
-    'whitenoise.runserver_nostatic'
+    'whitenoise.runserver_nostatic',
+    'apps.rental'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -130,3 +138,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'apps.rental.core.pagination.CountsPagination'
+}
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
