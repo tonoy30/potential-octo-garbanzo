@@ -87,6 +87,8 @@ class ProductRental(ViewSet):
                 product.durability = durability - total_rental_period_days
 
             product.needing_repair = product.durability <= 0
+            product.rented_at = None
+            product.returned_at = None
             product.save()
             return Response({'message': f'{product.name} returned successfully'},
                             status=status.HTTP_201_CREATED)

@@ -16,7 +16,6 @@ import dj_database_url
 import environ
 
 env = environ.Env()
-root_path = environ.Path(__file__) - 2
 
 ENV = env('ENV', default='prod')
 
