@@ -22,8 +22,10 @@ class Product(models.Model):
     minimum_rent_period = models.PositiveSmallIntegerField(
         default=1, null=False, blank=False)
     rented_at = models.DateTimeField(blank=True, null=True, editable=False)
-    rent_expire_at = models.DateTimeField(
+    returned_at = models.DateTimeField(
         blank=True, null=True, editable=False)
+    discount = models.FloatField(
+        default=0, null=False, blank=False)
 
     def __str__(self) -> str:
         return f"{self.name} - {self.type}"
