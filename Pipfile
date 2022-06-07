@@ -5,8 +5,6 @@ verify_ssl = true
 
 [packages]
 django = "*"
-django-filter = "*"
-django-seed = "*"
 djangorestframework = "*"
 gunicorn = "*"
 whitenoise = "*"
